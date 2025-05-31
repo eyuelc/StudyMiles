@@ -1,4 +1,5 @@
 let totalTokens;
+let intID;
 let userID = localStorage.getItem('userID');
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const result = data.find(item => item.userID.userID === parseInt(userID));
             if (result) {
                 const incentiveID = result.incentivesID;
+                intID = incentiveID;
                 const incentiveResponse = await fetch(`https://studymiles-2.onrender.com/incentive/${incentiveID}`);
                 if (!incentiveResponse.ok) {
                     throw new Error("Failed to fetch incentive details");
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
             throw new Error("Failed to fetch user data");
         }
-
+ 
         const userData = await response.json();
 
         document.querySelector(".userName").textContent = userData.name;
@@ -64,4 +66,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     menuToggle.addEventListener('click', () => {
         nav.classList.toggle('active'); // Toggle the 'active' class on the nav bar
     });
+
+    const profDiv = document.querySelector('.pf');
+
+    const p = document.createElement('p');
+    p.textContent = 'UserID:' + userID;
+
+    const p2 = document.createElement('p');
+    p2.textContent = 'IncentiveID:' + intID;
+
+    profDiv.appendChild(p);
+    profDiv.appendChild(p2);
+
 });
