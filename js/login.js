@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        loginButton.disabled = true;
+        loginButton.querySelector(".button-text").style.display = "none";
+        loginButton.querySelector(".spinner").style.display = "inline-block";
+
+ 
         try {
             const response = await fetch(`https://studymiles-2.onrender.com/new_user/${userID}`);
             

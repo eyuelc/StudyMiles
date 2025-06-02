@@ -18,7 +18,16 @@
             <input type="text" name="Age" placeholder="Age">
             <input type="text" name="Username" placeholder="Username">
             <input type="password" name="password" placeholder="password">
-            <button class="createButton">Create Account</button>
+            <button class="createButton">
+                <span class="button-text">Create Account</span>
+                <span class="spinner" style="display:none;">
+                <svg width="20" height="20" viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#333" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.4 31.4" transform="rotate(-90 25 25)">
+                    <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </span>
+            </button>
             <hr>
             <button><i class="fa-brands fa-google"></i></button>
             <button><i class="fa-brands fa-github"></i></button>

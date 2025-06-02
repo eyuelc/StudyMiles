@@ -10,8 +10,9 @@ let completedLessons = {
     section1: [false, false, false],
     section2: [false, false, false],
     section3: [false, false, false]
-    // Add more sections if needed...
 };
+
+
 
 let takenSeconds = {
     section1: [0, 0, 0],
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log(completedPercentage);
         localStorage.setItem('completedPercentage', JSON.stringify(completedPercentage));
     }
-    function loadProgressFromLocalStorage() {
+    async function loadProgressFromLocalStorage() {
         currentSection = parseInt(localStorage.getItem('currentSection')) || 0; // Default to 0 if not set
         currentLesson = parseInt(localStorage.getItem('currentLesson')) || 0;   // Default to 0 if not set
         totalTokens = parseInt(localStorage.getItem('totalTokens')) || 0;      // Default to 0 if not set
@@ -48,15 +49,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             section2: [0, 0, 0],
             section3: [0, 0, 0]
         }
-        //completedLessons from localStorage
         completedLessons = JSON.parse(localStorage.getItem('completedLessons')) || {
             section1: [false, false, false],
             section2: [false, false, false],
             section3: [false, false, false]
         };
         userID = localStorage.getItem('userID');
-        fetchIncentiveData(userID);
-        fetchProgressData(userID);
+        await fetchIncentiveData(userID);
+        await fetchProgressData(userID);
+
         /* fetchAndUpdateCompletedPercentage(userID); */
         completedPercentage = JSON.parse(localStorage.getItem('completedPercentage')) || [0, 0, 0];
         console.log('Loaded completedPercentage:', completedPercentage);    
@@ -86,17 +87,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const sectionKey = `section${sectionIndex + 1}`;
                 const sectionIn = parseInt(sectionKey.slice(7)) - 1;
                 const here = lesson.querySelector('.here');
-    
-                // Check if the .here element exists
+
                 if (!here) {
-                    return; // Skip this iteration if .here is not found
+                    return;
                 }
     
                 if (currentSection === sectionIn && currentLesson === lessonIndex) {
-                    here.style.display = "block"; // Show the "you're here" image
+                    here.style.display = "block";
+                    console.log(`FROM UH: Current section: ${currentSection}, Current lesson: ${currentLesson}, Section key: ${sectionKey}, Lesson index: ${lessonIndex}`);
                      
                 } else {
-                    here.style.display = "none"; // Hide the "you're here" image
+                    here.style.display = "none"; 
                 }
             });
         });
@@ -140,8 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const sectionCompleteAnimation = document.getElementById('sectionCompleteAnimation');
         const planetImage = document.getElementById('planetImage');
         const conquerMessage = document.getElementById('conquerMessage');
-    
-        // Ensure the elements exist
+
         if (!sectionCompleteAnimation || !planetImage || !conquerMessage) {
             console.error("Animation elements not found!");
             return;
@@ -183,7 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function updateEarnedTokens(userID) {
         try {
-            // Fetch all incentives
             const response = await fetch("https://studymiles-2.onrender.com/incentive");
             if (!response.ok) {
                 throw new Error("Failed to fetch incentive data");
@@ -462,8 +461,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tokenAnimation = document.getElementById('tokenAnimation');
     const tokenMessage = document.getElementById('tokenMessage');
     
-    loadProgressFromLocalStorage();
+    
+    await loadProgressFromLocalStorage();
+    
     updateLessonStyles();
+    updateHere(); 
     
     if (!userID) {
         alert("No user ID found. Please log in again.");

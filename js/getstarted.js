@@ -3,15 +3,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const createAccountButton = document.querySelector(".createButton");
 
     createAccountButton.addEventListener("click", async () => {
+        
+        if (createAccountButton.disabled) return;
+        
         const name = document.querySelector("input[name='Name']").value;
         const age = document.querySelector("input[name='Age']").value;
         const username = document.querySelector("input[name='Username']").value;
         const password = document.querySelector("input[name='password']").value;
 
+        
         if (!name || !age || !username || !password) {
             alert("Please fill in all fields.");
             return;
         }
+
+        createAccountButton.disabled = true;
+        createAccountButton.querySelector(".button-text").style.display = "none";
+        createAccountButton.querySelector(".spinner").style.display = "inline-block";
+
 
         const userData = {
             name,
@@ -24,9 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await createNewUser(userData);
 
         if (result) {
-            alert("Account created successfully!");
-
-            // Create progress entry
+            
             const progressData = {
                 userID: {
                     name: userData.name,
@@ -38,16 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 lessonsCompleted: 0,
                 lessonBreakDown: 0,
                 streak: 0
+            
             };
 
             const progressResult = await createProgress(progressData);
 
-            if (progressResult) {
-                console.log("Progress initialized:", progressResult);
-                alert("Progress initialized successfully!");
-            }
 
-            // Create incentive entry
             const incentiveData = {
                 userID: {
                     name: userData.name,
@@ -56,19 +59,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     password: userData.password
                 },
                 earnedTokens: 0,
-                walletAddress: "000123" // Default wallet address
+                walletAddress: "000123"
             };
 
             const incentiveResult = await createIncentive(incentiveData);
 
-            if (incentiveResult) {
-                console.log("Incentive initialized:", incentiveResult);
-                alert("Incentive initialized successfully!");
-            }
-
             localStorage.setItem("userID", result.userID);
+            alert("Account created successfully!");
             window.location.href = "home2.html";
         }
+        
     });
 });
 
