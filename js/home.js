@@ -33,15 +33,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         updateEarnedTokens(userID);
 
         localStorage.setItem('seconds', seconds);
-        localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
         localStorage.setItem('takenSeconds', JSON.stringify(takenSeconds));
-        console.log(completedPercentage);
-        localStorage.setItem('completedPercentage', JSON.stringify(completedPercentage));
-    }
+        }
     async function loadProgressFromLocalStorage() {
-        currentSection = parseInt(localStorage.getItem('currentSection')) || 0; // Default to 0 if not set
-        currentLesson = parseInt(localStorage.getItem('currentLesson')) || 0;   // Default to 0 if not set
-        totalTokens = parseInt(localStorage.getItem('totalTokens')) || 0;      // Default to 0 if not set
         seconds = parseInt(localStorage.getItem('seconds')) || 0;             // Default to 0 if not set
         
         takenSeconds = JSON.parse(localStorage.getItem('takenSeconds')) || {
@@ -49,18 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             section2: [0, 0, 0],
             section3: [0, 0, 0]
         }
-        completedLessons = JSON.parse(localStorage.getItem('completedLessons')) || {
-            section1: [false, false, false],
-            section2: [false, false, false],
-            section3: [false, false, false]
-        };
         userID = localStorage.getItem('userID');
         await fetchIncentiveData(userID);
         await fetchProgressData(userID);
-
-        /* fetchAndUpdateCompletedPercentage(userID); */
-        completedPercentage = JSON.parse(localStorage.getItem('completedPercentage')) || [0, 0, 0];
-        console.log('Loaded completedPercentage:', completedPercentage);    
+        updateCompletedLessonsFromProgress();   
     }
     function updateLessonStyles() {
         sections.forEach((section, sectionIndex) => {
@@ -282,10 +268,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 currentSection = progressData.lessonsCompleted;
                 currentLesson = progressData.lessonBreakDown;
 
-                console.log("Progress data:", progressData);
-                console.log("Current Section:", currentSection);
-                console.log("Current Lesson:", currentLesson);
-
                 return { currentSection, currentLesson };
 
                 return progressData; // Return the progress data for further use
@@ -386,6 +368,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    function updateCompletedLessonsFromProgress() {
+        // Reset all lessons to false
+        for (let s = 1; s <= 3; s++) {
+            const sectionKey = `section${s}`;
+            for (let l = 0; l < 3; l++) {
+                completedLessons[sectionKey][l] = false;
+            }
+        }
+
+        // Mark all previous sections as completed
+        for (let s = 1; s <= currentSection; s++) {
+            const sectionKey = `section${s}`;
+            for (let l = 0; l < 3; l++) {
+                completedLessons[sectionKey][l] = true;
+            }
+        }
+
+        // Mark lessons in the current section up to currentLesson (not including currentLesson itself)
+        if (currentSection < 3 && currentLesson > 0) {
+            const sectionKey = `section${currentSection + 1}`;
+            for (let l = 0; l < currentLesson; l++) {
+                completedLessons[sectionKey][l] = true;
+            }
+        }
+
+        console.log('Updated completedLessons from progress:', completedLessons);
+    }
+
     async function fetchCompletedPercentage(userID) {
         try {
             // Fetch all progress data
@@ -422,6 +432,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Error fetching completed percentage:", error);
             return null; // Return null in case of an error
         }
+    }
+
+    function getEmbedUrl(youtubeUrl) {
+        const match = youtubeUrl.match(/(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+        if (match && match[1]) {
+            return `https://www.youtube.com/embed/${match[1]}`;
+        }
+        return null;
     }
 
     
@@ -464,8 +482,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     await loadProgressFromLocalStorage();
     
-    updateLessonStyles();
+    /* updateLessonStyles(); */
     updateHere(); 
+
+    if (sections[currentSection]) {
+        sections[currentSection].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     
     if (!userID) {
         alert("No user ID found. Please log in again.");
@@ -610,8 +632,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                     ${lessonData.paragraph1} <br/><br/>
                     ${lessonData.paragraph2}
                 `;
+                const embedUrl = getEmbedUrl(lessonData.videoUrl);
+                console.log(embedUrl);
+                const vidCont = document.getElementById('videoContainer');
+                console.log(vidCont);
+                vidCont.innerHTML = `
+                    <iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                    <div class="video-summary">${lessonData.videoSummary}</div>
+                `;
+
                 document.getElementById('lessonModal').classList.add('active');
                 document.body.classList.add('modal-active');
+
+                
 
 
 
@@ -705,6 +738,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById('modalDetails').innerHTML = `
                     <h3>Please Finish Previous Lessons</h3>
                 `;
+                vidCont.innerHTML = ``;
                 document.getElementById('lessonModal').classList.add('active');
                 document.body.classList.add('modal-active');
                 }

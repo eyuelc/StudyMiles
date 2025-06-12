@@ -423,6 +423,7 @@ body.modal-active .main {
     background-color: rgba(65, 207, 65, 0.756);
 }
 
+
 .lesson .here {
     height: 70px;
     width: auto;
@@ -700,5 +701,15 @@ body.modal-active .main {
     .title{
         margin-right: 25px;
     }
+    .sectionCont .section:nth-of-type(even) .lesson:nth-of-type(4){
+        margin-right: -380px;
+    }
 }
 
+#videoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1.5rem 0;
+}

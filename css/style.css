@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+} 
 
 body{
     font-family: 'Poppins', 'Nunito', sans-serif;
@@ -49,7 +49,8 @@ nav img{
     border-radius: 0.7rem;
     border: none;
     color: grey;
-    
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+
 }
 
 .main button:first-of-type{
@@ -59,11 +60,15 @@ nav img{
 }
 
 .main button:first-of-type:hover{
-    background-color: rgb(110, 200, 110);
+    background-color: #7cf97c;
+    color: #222;
+    box-shadow: 0px 6px 16px rgba(55, 211, 55, 0.4);
     cursor: pointer;
 }
 .main a button:nth-of-type(2):hover{
-    background-color: rgb(222, 222, 222);
+    background-color: #e0e0e0;
+    color: #222;
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
     cursor: pointer;
 }
 .main button:nth-of-type(2){

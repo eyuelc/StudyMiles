@@ -10,9 +10,11 @@ let takenSeconds = {
     section3: [0, 0, 0]
 };
 
+let currentSection = 0;
+let currentLesson = 0;
+
 document.addEventListener("DOMContentLoaded", async function () {
     function update() {
-        completedPercentage = JSON.parse(localStorage.getItem('completedPercentage')) || [0, 0, 0];
         seconds = parseInt(localStorage.getItem('seconds')) || 0;
         takenSeconds = JSON.parse(localStorage.getItem('takenSeconds')) || {
             section1: [0, 0, 0],
@@ -52,6 +54,57 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+    async function fetchProgressData(userID) {
+        try {
+            const response = await fetch("https://studymiles-2.onrender.com/progress");
+            if (!response.ok) {
+                throw new Error("Failed to fetch progress data");
+            }
+
+            const data = await response.json();
+
+            const result = data.find(item => item.userID.userID === parseInt(userID));
+            if (result) {
+                const progressID = result.progressID;
+
+                const progressResponse = await fetch(`https://studymiles-2.onrender.com/progress/${progressID}`);
+                if (!progressResponse.ok) {
+                    throw new Error("Failed to fetch progress details");
+                }
+
+                const progressData = await progressResponse.json();
+
+                currentSection = progressData.lessonsCompleted;
+                currentLesson = progressData.lessonBreakDown;
+
+                return { currentSection, currentLesson };
+            } else {
+                console.log("User not found in progress data.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching progress data:", error);
+            return null;
+        }
+    }
+
+    function calculateCompletedPercentage(currentSection, currentLesson) {
+        const lessonsPerSection = 4;
+
+        for (let i = 0; i < 3; i++) {
+            if (i < currentSection) {
+                completedPercentage[i] = 100;
+            } else if (i === currentSection) {
+                completedPercentage[i] = Math.round((currentLesson / lessonsPerSection) * 100);
+            } else {
+                completedPercentage[i] = 0;
+            }
+        }
+    }
+
+    await fetchProgressData(userID);
+    calculateCompletedPercentage(currentSection, currentLesson);
+    console.log('completedPercentage:', completedPercentage);
 
     update();
     fetchIncentiveData(userID);

@@ -492,3 +492,11 @@ a:visited {
     
 }
 
+.task2{
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    
+}
+

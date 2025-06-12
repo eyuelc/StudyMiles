@@ -1,0 +1,198 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', 'Nunito', sans-serif;
+    background-color: rgb(31, 39, 46);
+    color: white;
+    position: relative;
+}
+
+hr{
+    color: rgb(183, 183, 183);
+}
+
+.imgCont{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    gap: 1rem;
+}
+
+.imgCont .zw {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 150px;
+    width: auto;
+    transition:
+        height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.h{
+    width: 200px;
+    height: auto;
+    position: absolute;
+    top: 15%;
+    left: 40%;
+}
+
+.continue{
+    width: 150px;
+    height: 40px;
+    background-color: rgb(53, 160, 61);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 700;
+    position: absolute;
+    bottom: 0;
+    right: 2rem;
+}
+
+.continue:hover{
+    background-color: rgb(77, 194, 85);
+}
+
+.bub {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100px;
+    position: absolute;
+    top: 30px;
+    left: 130px;
+    display: block;
+    pointer-events: none;
+}
+.bub.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.courses {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%); /* Start slightly lower */
+    background: rgba(34, 34, 34, 0.7);
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.courses.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+.courses button{
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    height: 64px;
+    width: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem 1.5rem;
+    gap: 1.2rem;
+    background: rgba(44, 56, 66, 0.95);
+    border: 2.5px solid #3fae4d;
+    border-radius: 0.7rem;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(60, 120, 60, 0.08);
+    transition:
+        background 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+        border 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+}
+
+.courses button img {
+    height: 34px;
+    width: auto;
+    filter: drop-shadow(0 2px 6px rgba(60, 120, 60, 0.10));
+}
+
+.courses button:hover,
+.courses button:focus {
+    background: #3fae4d;
+    color: #232b33;
+    border: 2.5px solid #7cf97c;
+    box-shadow: 0 4px 24px rgba(97, 193, 52, 0.18);
+    outline: none;
+}
+
+.courses button.selected {
+    background: #7cf97c;
+    color: #232b33;
+    border: 2.5px solid #3fae4d;
+    box-shadow: 0 4px 24px rgba(97, 193, 52, 0.22);
+}
+
+.custom-alert {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20, 20, 20, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.custom-alert.visible {
+    display: flex;
+}
+
+.custom-alert-content {
+    background: #232b33;
+    color: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    text-align: center;
+    min-width: 260px;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#closeAlertBtn {
+    margin-top: 1.5rem;
+    background: rgb(97, 193, 52);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#closeAlertBtn:hover {
+    background: rgb(77, 194, 85);
+}

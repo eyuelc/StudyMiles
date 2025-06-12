@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             localStorage.setItem("userID", result.userID);
             alert("Account created successfully!");
-            window.location.href = "home2.html";
+            window.location.href = "course.html";
         }
         
     });
