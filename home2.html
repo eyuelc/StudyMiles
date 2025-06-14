@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home2</title>
     <link rel="stylesheet" href="css/home2.css">
+    <link rel="icon" type="image/png" href="img/milesAI.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -224,6 +225,23 @@
         <p id="conquerMessage"></p>
     </div>
 
+    
+    <div id="aiChatbot" class="ai-chatbot">
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <span>Miles AI</span>
+                <button id="closeAiChat" class="close-ai-chat">&times;</button>
+            </div>
+            <div id="aiChatMessages" class="ai-chat-messages"></div>
+            <form id="aiChatForm" class="ai-chat-form">
+                <input type="text" id="aiChatInput" placeholder="Type your message..." autocomplete="off" required />
+                <button type="submit"><i class="fa fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <button id="openAiChat" class="ai-chat-btn">
+            <img src="img/miles.png" alt="" class="miles" style="width:auto;">
+        </button>
+    </div>
     <script type="module" src="js/home.js"></script>
 </body>
 

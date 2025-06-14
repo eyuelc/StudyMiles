@@ -713,3 +713,128 @@ body.modal-active .main {
     align-items: center;
     margin: 1.5rem 0;
 }
+
+.ai-chatbot {
+    position: fixed;
+    bottom: 2.2rem;
+    right: 2.2rem;
+    z-index: 9999;
+}
+
+.ai-chat-btn {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    border: 1px sold yellow;
+}
+.ai-chat-btn span{
+    color: white;
+}
+.ai-chat-btn img {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ai-chat-btn:hover img {
+    transform: scale(1.18);
+}
+
+.ai-chat-window {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 340px;
+    max-height: 420px;
+    background: #232b33;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    overflow: hidden;
+    z-index: 10000;
+    animation: fadeInUp 0.3s;
+}
+@keyframes fadeInUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.ai-chat-window.active {
+    display: flex;
+}
+
+.ai-chat-header {
+    background: #3fae4d;
+    color: #fff;
+    padding: 1rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.close-ai-chat {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.ai-chat-messages {
+    flex: 1;
+    padding: 1rem;
+    background: #232b33;
+    overflow-y: auto;
+    font-size: 1rem;
+    color: #fff;
+    max-height: 220px;
+}
+
+.ai-chat-form {
+    display: flex;
+    border-top: 1px solid #3fae4d;
+    background: #232b33;
+}
+.ai-chat-form input {
+    flex: 1;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 0 0 0 1rem;
+    outline: none;
+    background: #232b33;
+    color: #fff;
+}
+.ai-chat-form button {
+    background: #3fae4d;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    padding: 0 1.2rem;
+    border-radius: 0 0 1rem 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ai-chat-form button:hover {
+    background: #7cf97c;
+    color: #232b33;
+}
+
+.miles{
+    height: 170px;
+}
+
+@media (max-width: 350px) {
+    .ai-chatbot {
+    bottom: 2.2rem;
+    right: 0;
+    z-index: 9999;
+}
+}

@@ -632,14 +632,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                     ${lessonData.paragraph1} <br/><br/>
                     ${lessonData.paragraph2}
                 `;
-                const embedUrl = getEmbedUrl(lessonData.videoUrl);
-                console.log(embedUrl);
-                const vidCont = document.getElementById('videoContainer');
-                console.log(vidCont);
-                vidCont.innerHTML = `
-                    <iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-                    <div class="video-summary">${lessonData.videoSummary}</div>
-                `;
+                if(currentLesson !== 4){
+                    const embedUrl = getEmbedUrl(lessonData.videoUrl);
+                    console.log(embedUrl);
+                    const vidCont = document.getElementById('videoContainer');
+                    console.log(vidCont);
+                    vidCont.innerHTML = `
+                        <iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                        <div class="video-summary">${lessonData.videoSummary}</div>
+                    `;
+                }
+                
 
                 document.getElementById('lessonModal').classList.add('active');
                 document.body.classList.add('modal-active');
@@ -785,7 +788,97 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nav = document.querySelector('.nav');
 
     menuToggle.addEventListener('click', () => {
-        nav.classList.toggle('active'); // Toggle the 'active' class on the nav bar
+        nav.classList.toggle('active'); 
+    });
+
+    const openAiChat = document.getElementById('openAiChat');
+    const aiChatWindow = document.getElementById('aiChatWindow');
+    const closeAiChat = document.getElementById('closeAiChat');
+    const aiChatForm = document.getElementById('aiChatForm');
+    const aiChatInput = document.getElementById('aiChatInput');
+    const aiChatMessages = document.getElementById('aiChatMessages');
+
+    let preChatShown = false;
+
+    const openAiChatHandler = () => {
+        aiChatWindow.classList.add('active');
+        if (!preChatShown && aiChatMessages.innerHTML.trim() === '') {
+            aiChatMessages.innerHTML = `<div style="text-align:left;margin-bottom:8px;">
+                <span style="background:#fff;color:#232b33;padding:6px 12px;border-radius:1rem 1rem 1rem 0;display:inline-block;">
+                    Hey! I’m Miles 👽. Need help with something? Let’s chat!
+                </span>
+            </div>`;
+            preChatShown = true;
+        }
+        aiChatInput.focus();
+    };
+
+    const milesImg = document.querySelector('.miles');
+
+    const tabletQuery = window.matchMedia('(max-width: 1024px) and (min-width: 601px)');
+    const phoneQuery = window.matchMedia('(max-width: 600px)');
+
+    function applyResponsiveSettings() {
+
+        openAiChat.removeEventListener('mouseenter', openAiChatHandler);
+        openAiChat.removeEventListener('click', openAiChatHandler);
+
+        if (phoneQuery.matches) {
+            openAiChat.addEventListener('click', openAiChatHandler);
+            if (milesImg) milesImg.style.transform = 'scale(0.6)';
+        } else if (tabletQuery.matches) {
+            openAiChat.addEventListener('click', openAiChatHandler);
+            if (milesImg) milesImg.style.transform = 'scale(0.75)';
+        } else {
+            openAiChat.addEventListener('mouseenter', openAiChatHandler);
+            if (milesImg) milesImg.style.transform = 'scale(1)';
+        }
+    }
+
+    applyResponsiveSettings();
+
+    tabletQuery.addEventListener('change', applyResponsiveSettings);
+    phoneQuery.addEventListener('change', applyResponsiveSettings);
+
+    closeAiChat.addEventListener('click', () => {
+        aiChatWindow.classList.remove('active');
+    });
+
+    const SYSTEM_PROMPT = "You are Miles 👽, an AI study assistant. Introduce yourself as Miles and help users with study questions in a friendly, concise way.";
+
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+    aiChatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userMsg = aiChatInput.value.trim();
+        if (!userMsg) return;
+        aiChatMessages.innerHTML += `<div style="text-align:right;margin-bottom:8px;"><span style="background:#3fae4d;color:#232b33;padding:6px 12px;border-radius:1rem 1rem 0 1rem;display:inline-block;">${userMsg}</span></div>`;
+        aiChatInput.value = '';
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        fetch('https://milesai.onrender.com/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: SYSTEM_PROMPT + "\nUser: " + userMsg })
+        })
+        .then(response => response.json())
+        .then(data => {
+            aiChatMessages.innerHTML += `<div style="text-align:left;margin-bottom:8px;">
+                <span style="background:#fff;color:#232b33;padding:6px 12px;border-radius:1rem 1rem 1rem 0;display:inline-block;">
+                    ${data.reply}
+                </span>
+            </div>`;
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        })
+        .catch(error => {
+            aiChatMessages.innerHTML += `<div style="text-align:left;margin-bottom:8px;">
+                <span style="background:#fff;color:#232b33;padding:6px 12px;border-radius:1rem 1rem 1rem 0;display:inline-block;">
+                    Sorry, there was an error connecting to MilesAI.
+                </span>
+            </div>`;
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        });
     });
 });
 

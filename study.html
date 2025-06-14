@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study</title>
     <link rel="stylesheet" href="css/study.css">
+    <link rel="icon" type="image/png" href="img/milesAI.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head> 
@@ -126,7 +127,16 @@
                 </div>
                 
             </div>
-            
+            <div class="task task2">
+                <img src="img/milesAI.png" alt="">
+                <p>Daily Lesson with MilesAI</p>
+                <p class="p2">></p>
+            </div>
+            <div class="task task2">
+                <img src="img/milesAI.png" alt="">
+                <p>Take quiz by MilesAI</p>
+                <p class="p2">></p>
+            </div>
 
         </div>
     </div>
@@ -149,6 +159,18 @@
             </div>
             <button class="closeHistory">X</button>
         </div>
+    </div>
+
+    <div id="aiLessonModal" class="ai-lesson-modal">
+    <div class="ai-modal-content">
+        <button class="closeAiModal">&times;</button>
+        <h2 id="aiLessonTitle">AI Daily Lesson</h2>
+        <div id="aiLessonContent">
+        </div>
+        <div id="aiQuizContainer">
+        </div>
+        <button id="submitAiQuiz" class="complete">Submit Quiz</button>
+    </div>
     </div>
     <script type="module" src="js/study.js"></script>
 </body>

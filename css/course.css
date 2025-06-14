@@ -39,11 +39,12 @@ hr{
         transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .h{
-    width: 200px;
+    width: 160px;
     height: auto;
     position: absolute;
     top: 15%;
     left: 40%;
+    z-index: 10000;
 }
 
 .continue{
